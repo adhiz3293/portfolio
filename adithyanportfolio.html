@@ -1,0 +1,726 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Adithyan A S — Frontend Developer</title>
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --bg: #0d0d0d;
+    --bg2: #141414;
+    --bg3: #1a1a1a;
+    --card: #161616;
+    --border: rgba(255,255,255,0.08);
+    --border-hover: rgba(255,255,255,0.16);
+    --accent: #7c6af7;
+    --accent2: #a78bfa;
+    --text: #e8e8e8;
+    --muted: #888;
+    --muted2: #555;
+    --teal: #2dd4bf;
+    --amber: #fbbf24;
+    --green: #4ade80;
+  }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    font-size: 15px;
+    line-height: 1.7;
+    overflow-x: hidden;
+  }
+
+  /* NAV */
+  nav {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+    background: rgba(13,13,13,0.85);
+    backdrop-filter: blur(12px);
+    border-bottom: 1px solid var(--border);
+    padding: 0 2rem;
+    height: 60px;
+    display: flex; align-items: center; justify-content: space-between;
+  }
+  .nav-brand {
+    font-size: 16px; font-weight: 600; color: var(--text);
+    text-decoration: none; letter-spacing: -0.3px;
+  }
+  .nav-brand span { color: var(--accent2); }
+  .nav-links { display: flex; gap: 2rem; list-style: none; }
+  .nav-links a {
+    color: var(--muted); font-size: 14px; text-decoration: none;
+    transition: color 0.2s;
+  }
+  .nav-links a:hover { color: var(--text); }
+  .nav-cta {
+    background: var(--accent); color: #fff; border: none;
+    padding: 8px 18px; border-radius: 6px; font-size: 13px;
+    cursor: pointer; font-weight: 500; text-decoration: none;
+    transition: opacity 0.2s;
+  }
+  .nav-cta:hover { opacity: 0.85; }
+
+  /* LAYOUT */
+  .container { max-width: 1000px; margin: 0 auto; padding: 0 2rem; }
+  section { padding: 6rem 0; }
+
+  /* HERO */
+  #hero {
+    min-height: 100vh;
+    display: flex; align-items: center;
+    position: relative;
+    overflow: hidden;
+    padding-top: 60px;
+  }
+  .hero-grid {
+    position: absolute; inset: 0;
+    background-image:
+      linear-gradient(rgba(124,106,247,0.04) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(124,106,247,0.04) 1px, transparent 1px);
+    background-size: 60px 60px;
+  }
+  .hero-glow {
+    position: absolute; top: 20%; left: 50%; transform: translateX(-50%);
+    width: 600px; height: 400px;
+    background: radial-gradient(ellipse, rgba(124,106,247,0.12) 0%, transparent 70%);
+    pointer-events: none;
+  }
+  .hero-content { position: relative; z-index: 1; max-width: 700px; }
+  .hero-badge {
+    display: inline-flex; align-items: center; gap: 8px;
+    background: rgba(124,106,247,0.12);
+    border: 1px solid rgba(124,106,247,0.3);
+    color: var(--accent2);
+    font-size: 13px; padding: 6px 14px; border-radius: 999px;
+    margin-bottom: 2rem;
+  }
+  .hero-badge::before {
+    content: ''; width: 7px; height: 7px; border-radius: 50%;
+    background: var(--accent2);
+    animation: pulse 2s ease-in-out infinite;
+  }
+  @keyframes pulse {
+    0%, 100% { opacity: 1; transform: scale(1); }
+    50% { opacity: 0.4; transform: scale(0.7); }
+  }
+  h1 {
+    font-size: clamp(2.4rem, 6vw, 4rem);
+    font-weight: 700;
+    line-height: 1.1;
+    letter-spacing: -1.5px;
+    margin-bottom: 1.5rem;
+    color: #fff;
+  }
+  h1 .highlight {
+    background: linear-gradient(135deg, var(--accent2) 0%, var(--teal) 100%);
+    -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+  .hero-desc {
+    font-size: 17px; color: var(--muted); max-width: 560px;
+    margin-bottom: 2.5rem; line-height: 1.75;
+  }
+  .hero-actions { display: flex; gap: 1rem; flex-wrap: wrap; }
+  .btn-primary {
+    display: inline-flex; align-items: center; gap: 8px;
+    background: var(--accent); color: #fff;
+    padding: 12px 24px; border-radius: 8px; font-size: 14px;
+    font-weight: 500; text-decoration: none; transition: opacity 0.2s;
+    border: none; cursor: pointer;
+  }
+  .btn-primary:hover { opacity: 0.85; }
+  .btn-secondary {
+    display: inline-flex; align-items: center; gap: 8px;
+    background: transparent; color: var(--text);
+    padding: 12px 24px; border-radius: 8px; font-size: 14px;
+    font-weight: 500; text-decoration: none;
+    border: 1px solid var(--border-hover); transition: border-color 0.2s, background 0.2s;
+  }
+  .btn-secondary:hover { background: rgba(255,255,255,0.05); border-color: var(--muted2); }
+  .hero-stats {
+    display: flex; gap: 3rem; margin-top: 4rem;
+    padding-top: 2.5rem; border-top: 1px solid var(--border);
+  }
+  .stat-val { font-size: 2rem; font-weight: 700; color: #fff; line-height: 1; }
+  .stat-label { font-size: 13px; color: var(--muted); margin-top: 4px; }
+
+  /* SECTION TITLES */
+  .section-eyebrow {
+    font-size: 12px; font-weight: 600; letter-spacing: 2px;
+    color: var(--accent2); text-transform: uppercase; margin-bottom: 0.75rem;
+  }
+  .section-title {
+    font-size: clamp(1.6rem, 4vw, 2.2rem); font-weight: 700;
+    color: #fff; letter-spacing: -0.5px; margin-bottom: 1rem;
+  }
+  .section-desc { color: var(--muted); max-width: 480px; margin-bottom: 3rem; }
+
+  /* ABOUT */
+  #about { background: var(--bg2); }
+  .about-grid {
+    display: grid; grid-template-columns: 1fr 1fr; gap: 4rem; align-items: start;
+  }
+  .about-text p { color: var(--muted); margin-bottom: 1rem; line-height: 1.8; }
+  .contact-list { list-style: none; margin-top: 1.5rem; display: flex; flex-direction: column; gap: 12px; }
+  .contact-list li { display: flex; align-items: center; gap: 10px; font-size: 14px; color: var(--muted); }
+  .contact-list li svg { width: 16px; height: 16px; stroke: var(--accent2); flex-shrink: 0; }
+  .contact-list a { color: var(--accent2); text-decoration: none; }
+  .contact-list a:hover { text-decoration: underline; }
+
+  .lang-chips { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 1.5rem; }
+  .chip {
+    font-size: 12px; padding: 5px 12px; border-radius: 999px;
+    border: 1px solid var(--border); color: var(--muted);
+    background: var(--bg3);
+  }
+  .chip.native { border-color: rgba(45,212,191,0.3); color: var(--teal); background: rgba(45,212,191,0.08); }
+
+  /* SKILLS */
+  #skills {}
+  .skills-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1.5rem; }
+  .skill-card {
+    background: var(--card); border: 1px solid var(--border);
+    border-radius: 12px; padding: 1.5rem;
+    transition: border-color 0.2s, transform 0.2s;
+  }
+  .skill-card:hover { border-color: var(--border-hover); transform: translateY(-2px); }
+  .skill-card-icon {
+    width: 40px; height: 40px; border-radius: 8px;
+    display: flex; align-items: center; justify-content: center;
+    margin-bottom: 1rem; font-size: 18px;
+  }
+  .skill-card h3 { font-size: 14px; font-weight: 600; color: #fff; margin-bottom: 0.75rem; }
+  .skill-tags { display: flex; flex-wrap: wrap; gap: 6px; }
+  .tag {
+    font-size: 12px; padding: 4px 10px; border-radius: 6px;
+    background: rgba(255,255,255,0.05); color: var(--muted);
+    border: 1px solid var(--border);
+  }
+  .tag.hot {
+    background: rgba(124,106,247,0.12); color: var(--accent2);
+    border-color: rgba(124,106,247,0.25);
+  }
+
+  /* EXPERIENCE */
+  #experience { background: var(--bg2); }
+  .timeline { display: flex; flex-direction: column; gap: 0; }
+  .timeline-item { display: grid; grid-template-columns: 180px 1fr; gap: 2rem; padding: 2rem 0; border-bottom: 1px solid var(--border); }
+  .timeline-item:last-child { border-bottom: none; }
+  .timeline-date { font-size: 13px; color: var(--muted); padding-top: 4px; }
+  .timeline-co { font-size: 12px; color: var(--accent2); margin-top: 4px; font-weight: 500; }
+  .timeline-content h3 { font-size: 16px; font-weight: 600; color: #fff; margin-bottom: 0.5rem; }
+  .timeline-content .badge {
+    display: inline-block; font-size: 11px; padding: 3px 10px;
+    border-radius: 999px; margin-bottom: 1rem;
+    background: rgba(74,222,128,0.1); color: var(--green);
+    border: 1px solid rgba(74,222,128,0.25);
+  }
+  .timeline-badge-end {
+    background: rgba(255,255,255,0.06) !important; color: var(--muted) !important;
+    border-color: var(--border) !important;
+  }
+  .timeline-content ul { list-style: none; display: flex; flex-direction: column; gap: 8px; }
+  .timeline-content ul li {
+    font-size: 14px; color: var(--muted); padding-left: 1.25rem; position: relative; line-height: 1.6;
+  }
+  .timeline-content ul li::before {
+    content: '—'; position: absolute; left: 0; color: var(--muted2);
+  }
+  .metric {
+    font-weight: 600; color: var(--amber);
+  }
+
+  /* PROJECTS */
+  #projects {}
+  .projects-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 1.5rem; }
+  .project-card {
+    background: var(--card); border: 1px solid var(--border);
+    border-radius: 12px; padding: 1.75rem;
+    display: flex; flex-direction: column; gap: 1rem;
+    transition: border-color 0.2s, transform 0.2s;
+  }
+  .project-card:hover { border-color: rgba(124,106,247,0.4); transform: translateY(-3px); }
+  .project-header { display: flex; justify-content: space-between; align-items: flex-start; }
+  .project-icon { font-size: 28px; }
+  .project-client {
+    font-size: 11px; padding: 4px 10px; border-radius: 999px;
+    background: rgba(251,191,36,0.1); color: var(--amber);
+    border: 1px solid rgba(251,191,36,0.25);
+  }
+  .project-card h3 { font-size: 15px; font-weight: 600; color: #fff; }
+  .project-card p { font-size: 13px; color: var(--muted); line-height: 1.65; flex: 1; }
+  .project-tech { display: flex; flex-wrap: wrap; gap: 6px; }
+
+  /* CERTIFICATIONS */
+  #certifications { background: var(--bg2); }
+  .certs-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 1.5rem; }
+  .cert-card {
+    background: var(--card); border: 1px solid var(--border);
+    border-radius: 12px; padding: 1.5rem;
+    display: flex; align-items: center; gap: 1rem;
+    transition: border-color 0.2s;
+  }
+  .cert-card:hover { border-color: var(--border-hover); }
+  .cert-icon {
+    width: 44px; height: 44px; border-radius: 10px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 22px; flex-shrink: 0;
+  }
+  .cert-card h3 { font-size: 14px; font-weight: 600; color: #fff; }
+  .cert-card p { font-size: 12px; color: var(--muted); margin-top: 3px; }
+
+  /* EDUCATION */
+  .edu-card {
+    background: var(--card); border: 1px solid var(--border);
+    border-radius: 12px; padding: 1.75rem;
+    display: flex; align-items: center; gap: 1.5rem;
+  }
+  .edu-icon {
+    width: 52px; height: 52px; border-radius: 12px;
+    background: rgba(124,106,247,0.12); border: 1px solid rgba(124,106,247,0.25);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 24px; flex-shrink: 0;
+  }
+  .edu-card h3 { font-size: 16px; font-weight: 600; color: #fff; }
+  .edu-card p { font-size: 13px; color: var(--muted); margin-top: 4px; }
+
+  /* RESUME DOWNLOAD */
+  #resume {
+    background: linear-gradient(135deg, rgba(124,106,247,0.08) 0%, rgba(45,212,191,0.06) 100%);
+    border-top: 1px solid var(--border);
+    border-bottom: 1px solid var(--border);
+    text-align: center;
+  }
+  #resume h2 { font-size: 2rem; font-weight: 700; color: #fff; margin-bottom: 1rem; }
+  #resume p { color: var(--muted); margin-bottom: 2rem; }
+
+  /* FOOTER */
+  footer {
+    padding: 3rem 2rem;
+    border-top: 1px solid var(--border);
+    text-align: center;
+    color: var(--muted2); font-size: 13px;
+  }
+  footer a { color: var(--muted); text-decoration: none; }
+  footer a:hover { color: var(--text); }
+
+  /* RESPONSIVE */
+  @media (max-width: 768px) {
+    nav { padding: 0 1rem; }
+    .nav-links { display: none; }
+    .container { padding: 0 1.25rem; }
+    section { padding: 4rem 0; }
+    .about-grid { grid-template-columns: 1fr; gap: 2rem; }
+    .timeline-item { grid-template-columns: 1fr; gap: 0.5rem; }
+    .hero-stats { gap: 2rem; }
+    h1 { font-size: 2.2rem; }
+  }
+
+  /* SCROLL ANIMATION */
+  .reveal {
+    opacity: 0; transform: translateY(20px);
+    transition: opacity 0.6s ease, transform 0.6s ease;
+  }
+  .reveal.visible { opacity: 1; transform: translateY(0); }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <a href="#hero" class="nav-brand">Adithyan <span>A S</span></a>
+  <ul class="nav-links">
+    <li><a href="#about">About</a></li>
+    <li><a href="#skills">Skills</a></li>
+    <li><a href="#experience">Experience</a></li>
+    <li><a href="#projects">Projects</a></li>
+    <li><a href="#resume">Resume</a></li>
+  </ul>
+  <a href="mailto:adithyan32adhi@gmail.com" class="nav-cta">Hire Me</a>
+</nav>
+
+<!-- HERO -->
+<section id="hero">
+  <div class="hero-grid"></div>
+  <div class="hero-glow"></div>
+  <div class="container">
+    <div class="hero-content">
+      <div class="hero-badge">Available for new opportunities</div>
+      <h1>
+        Crafting <span class="highlight">Scalable</span><br>
+        Frontend Experiences
+      </h1>
+      <p class="hero-desc">
+        Software Engineer with 2.9+ years building enterprise-grade Angular applications at TCS,
+        specialising in Angular (v2–v20), TypeScript, MEAN Stack, and performance-first UI architecture.
+      </p>
+      <div class="hero-actions">
+        <a href="#experience" class="btn-primary">
+          <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+          View My Work
+        </a>
+        <a href="#resume" class="btn-secondary">
+          <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M12 16l4-4H8l4 4zM12 8v8M4 20h16"/></svg>
+          Download Resume
+        </a>
+      </div>
+      <div class="hero-stats">
+        <div>
+          <div class="stat-val">2.9+</div>
+          <div class="stat-label">Years Experience</div>
+        </div>
+        <div>
+          <div class="stat-val">15+</div>
+          <div class="stat-label">Components Built</div>
+        </div>
+        <div>
+          <div class="stat-val">40%</div>
+          <div class="stat-label">Bug Reduction</div>
+        </div>
+        <div>
+          <div class="stat-val">4</div>
+          <div class="stat-label">Enterprise Apps</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ABOUT -->
+<section id="about">
+  <div class="container">
+    <div class="about-grid reveal">
+      <div class="about-text">
+        <p class="section-eyebrow">About Me</p>
+        <h2 class="section-title">Thiruvananthapuram-based Frontend Engineer</h2>
+        <p>
+          I'm a Software Engineer currently at Tata Consultancy Services, working on enterprise-scale
+          Angular applications for global clients including Apple. I specialise in building reusable
+          component libraries, reactive state management with NgRx & RxJS, and driving Angular migration
+          initiatives that reduce technical debt.
+        </p>
+        <p>
+          Beyond the code, I enjoy mentoring and have hands-on experience training junior developers
+          on Angular, TypeScript, and Node.js ecosystems.
+        </p>
+        <ul class="contact-list">
+          <li>
+            <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,12 2,6"/></svg>
+            <a href="mailto:adithyan32adhi@gmail.com">adithyan32adhi@gmail.com</a>
+          </li>
+          <li>
+            <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07A19.5 19.5 0 013.07 9.81 19.79 19.79 0 01.5 1.18 2 2 0 012.5 0h3a2 2 0 012 1.72c.127.96.361 1.903.7 2.81a2 2 0 01-.45 2.11L6.91 7.91a16 16 0 006.59 6.59l1.27-.82a2 2 0 012.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0122 16.92z"/></svg>
+            +91 6282445626
+          </li>
+          <li>
+            <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg>
+            Thiruvananthapuram, Kerala, India
+          </li>
+          <li>
+            <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M16 8a6 6 0 016 6v7h-4v-7a2 2 0 00-2-2 2 2 0 00-2 2v7h-4v-7a6 6 0 016-6zM2 9h4v12H2z"/><circle cx="4" cy="4" r="2"/></svg>
+            <a href="https://linkedin.com/in/adithyan-as" target="_blank">linkedin.com/in/adithyan-as</a>
+          </li>
+        </ul>
+      </div>
+      <div>
+        <p class="section-eyebrow" style="margin-bottom:1rem;">Languages</p>
+        <div class="lang-chips">
+          <span class="chip native">Malayalam — Native</span>
+          <span class="chip">English — Fluent</span>
+          <span class="chip">Tamil — Conversational</span>
+        </div>
+
+        <p class="section-eyebrow" style="margin-top:2rem; margin-bottom:1rem;">Core Strengths</p>
+        <div style="display:flex;flex-direction:column;gap:10px;">
+          <div style="display:flex;align-items:center;gap:10px;">
+            <div style="width:8px;height:8px;border-radius:50%;background:var(--accent2);flex-shrink:0;"></div>
+            <span style="font-size:14px;color:var(--muted);">Strong analytical & debugging skills</span>
+          </div>
+          <div style="display:flex;align-items:center;gap:10px;">
+            <div style="width:8px;height:8px;border-radius:50%;background:var(--teal);flex-shrink:0;"></div>
+            <span style="font-size:14px;color:var(--muted);">Independent handling of complex UI modules</span>
+          </div>
+          <div style="display:flex;align-items:center;gap:10px;">
+            <div style="width:8px;height:8px;border-radius:50%;background:var(--amber);flex-shrink:0;"></div>
+            <span style="font-size:14px;color:var(--muted);">Quick adaptability to new frameworks</span>
+          </div>
+          <div style="display:flex;align-items:center;gap:10px;">
+            <div style="width:8px;height:8px;border-radius:50%;background:var(--green);flex-shrink:0;"></div>
+            <span style="font-size:14px;color:var(--muted);">Clear stakeholder communication</span>
+          </div>
+          <div style="display:flex;align-items:center;gap:10px;">
+            <div style="width:8px;height:8px;border-radius:50%;background:var(--accent);flex-shrink:0;"></div>
+            <span style="font-size:14px;color:var(--muted);">Scalable, maintainable code focus</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SKILLS -->
+<section id="skills">
+  <div class="container">
+    <p class="section-eyebrow reveal">Technical Skills</p>
+    <h2 class="section-title reveal">My Tech Stack</h2>
+    <p class="section-desc reveal">Specialised in Angular ecosystem with full-stack MEAN capabilities and cloud experience.</p>
+    <div class="skills-grid">
+      <div class="skill-card reveal">
+        <div class="skill-card-icon" style="background:rgba(124,106,247,0.12);">🅰️</div>
+        <h3>Frontend Core</h3>
+        <div class="skill-tags">
+          <span class="tag hot">Angular v2–v20</span>
+          <span class="tag hot">TypeScript</span>
+          <span class="tag hot">JavaScript ES6+</span>
+          <span class="tag">HTML5</span>
+          <span class="tag">CSS3 / SCSS</span>
+          <span class="tag">React</span>
+        </div>
+      </div>
+      <div class="skill-card reveal">
+        <div class="skill-card-icon" style="background:rgba(45,212,191,0.12);">⚡</div>
+        <h3>State & Architecture</h3>
+        <div class="skill-tags">
+          <span class="tag hot">NgRx</span>
+          <span class="tag hot">RxJS</span>
+          <span class="tag">Observables</span>
+          <span class="tag">Reactive Forms</span>
+          <span class="tag">OnPush Strategy</span>
+          <span class="tag">Lazy Loading</span>
+          <span class="tag">SSR / Hydration</span>
+        </div>
+      </div>
+      <div class="skill-card reveal">
+        <div class="skill-card-icon" style="background:rgba(74,222,128,0.12);">🎨</div>
+        <h3>UI Frameworks</h3>
+        <div class="skill-tags">
+          <span class="tag hot">Angular Material</span>
+          <span class="tag">Bootstrap</span>
+          <span class="tag">Tailwind CSS</span>
+          <span class="tag">Responsive Design</span>
+          <span class="tag">Accessibility (a11y)</span>
+        </div>
+      </div>
+      <div class="skill-card reveal">
+        <div class="skill-card-icon" style="background:rgba(251,191,36,0.12);">🔧</div>
+        <h3>Backend / Database</h3>
+        <div class="skill-tags">
+          <span class="tag hot">Node.js</span>
+          <span class="tag hot">Express.js</span>
+          <span class="tag">MongoDB</span>
+          <span class="tag">MySQL</span>
+          <span class="tag">REST APIs</span>
+        </div>
+      </div>
+      <div class="skill-card reveal">
+        <div class="skill-card-icon" style="background:rgba(251,113,133,0.12);">☁️</div>
+        <h3>Cloud & DevOps</h3>
+        <div class="skill-tags">
+          <span class="tag hot">AWS S3</span>
+          <span class="tag">AWS EC2</span>
+          <span class="tag">Git / GitHub</span>
+          <span class="tag">Postman</span>
+          <span class="tag">Agile / Scrum</span>
+        </div>
+      </div>
+      <div class="skill-card reveal">
+        <div class="skill-card-icon" style="background:rgba(167,139,250,0.12);">🧪</div>
+        <h3>Testing & Quality</h3>
+        <div class="skill-tags">
+          <span class="tag hot">Jasmine</span>
+          <span class="tag hot">Karma</span>
+          <span class="tag">Unit Testing</span>
+          <span class="tag">Root Cause Analysis</span>
+          <span class="tag">AI-Assisted Dev</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- EXPERIENCE -->
+<section id="experience">
+  <div class="container">
+    <p class="section-eyebrow reveal">Career</p>
+    <h2 class="section-title reveal">Work Experience</h2>
+    <div class="timeline">
+      <div class="timeline-item reveal">
+        <div>
+          <div class="timeline-date">Apr 2024 – Present</div>
+          <div class="timeline-co">Tata Consultancy Services</div>
+        </div>
+        <div class="timeline-content">
+          <h3>Software Engineer</h3>
+          <span class="badge">● Current Role</span>
+          <ul>
+            <li>Built <span class="metric">15+</span> reusable Angular components, reducing development time by <span class="metric">30%</span> across modules.</li>
+            <li>Improved application performance by <span class="metric">25–40%</span> via lazy loading and OnPush change detection strategies.</li>
+            <li>Reduced production bugs by <span class="metric">40%</span> through comprehensive unit testing with Jasmine and Karma.</li>
+            <li>Implemented NgRx state management for predictable data flow across complex enterprise modules.</li>
+            <li>Migrated legacy Angular v2–v13 apps to modern Angular versions, cutting technical debt by <span class="metric">30%</span>.</li>
+            <li>Integrated AWS S3 for dynamic media handling and improved asset loading performance.</li>
+            <li>Collaborated cross-functionally with backend engineers, QA, and product stakeholders in Agile sprints.</li>
+          </ul>
+        </div>
+      </div>
+      <div class="timeline-item reveal">
+        <div>
+          <div class="timeline-date">Oct 2023 – Mar 2024</div>
+          <div class="timeline-co">Edifice Technologies</div>
+        </div>
+        <div class="timeline-content">
+          <h3>Software Trainee</h3>
+          <span class="badge timeline-badge-end">Completed</span>
+          <ul>
+            <li>Delivered hands-on training on Angular, JavaScript, TypeScript, Node.js, and Express.js.</li>
+            <li>Built and maintained internal React-based projects with component-based architecture and responsive UI.</li>
+            <li>Mentored students through practical projects and real-world debugging scenarios.</li>
+            <li>Designed practical exercises bridging theoretical knowledge with industry application.</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PROJECTS -->
+<section id="projects">
+  <div class="container">
+    <p class="section-eyebrow reveal">Work</p>
+    <h2 class="section-title reveal">Project Highlights</h2>
+    <p class="section-desc reveal">Enterprise-scale Angular applications supporting global business operations.</p>
+    <div class="projects-grid">
+      <div class="project-card reveal">
+        <div class="project-header">
+          <div class="project-icon">🍎</div>
+          <span class="project-client">Client: Apple</span>
+        </div>
+        <h3>Angular Enterprise Applications</h3>
+        <p>
+          Contributed to 4 enterprise-scale Angular applications supporting global Apple business operations
+          and stakeholders. Led complete Angular 13 → 20 migration, reducing technical debt significantly.
+        </p>
+        <div class="project-tech">
+          <span class="tag hot">Angular 20</span>
+          <span class="tag">NgRx</span>
+          <span class="tag">RxJS</span>
+          <span class="tag">AWS S3</span>
+          <span class="tag">AWS EC2</span>
+          <span class="tag">TypeScript</span>
+        </div>
+      </div>
+      <div class="project-card reveal">
+        <div class="project-header">
+          <div class="project-icon">⚙️</div>
+          <span class="project-client" style="background:rgba(45,212,191,0.1);color:var(--teal);border-color:rgba(45,212,191,0.25);">TCS</span>
+        </div>
+        <h3>Angular Component Library</h3>
+        <p>
+          Architected 15+ production-grade reusable Angular components used across multiple enterprise
+          modules. Implemented Reactive Forms, API integrations, and complex business workflows.
+        </p>
+        <div class="project-tech">
+          <span class="tag hot">Angular Material</span>
+          <span class="tag">Reactive Forms</span>
+          <span class="tag">SCSS</span>
+          <span class="tag">REST APIs</span>
+        </div>
+      </div>
+      <div class="project-card reveal">
+        <div class="project-header">
+          <div class="project-icon">🎓</div>
+          <span class="project-client" style="background:rgba(74,222,128,0.1);color:var(--green);border-color:rgba(74,222,128,0.25);">Edifice</span>
+        </div>
+        <h3>Internal React Platform</h3>
+        <p>
+          Built and maintained internal React-based applications with component-based architecture,
+          state management, and responsive UI during tenure at Edifice Technologies.
+        </p>
+        <div class="project-tech">
+          <span class="tag hot">React</span>
+          <span class="tag">Node.js</span>
+          <span class="tag">JavaScript</span>
+          <span class="tag">Responsive UI</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- EDUCATION & CERTS -->
+<section id="certifications" style="padding-bottom:3rem;">
+  <div class="container">
+    <p class="section-eyebrow reveal">Credentials</p>
+    <h2 class="section-title reveal">Education & Certifications</h2>
+    <div class="edu-card reveal" style="margin-bottom:2rem;">
+      <div class="edu-icon">🎓</div>
+      <div>
+        <h3>B.Sc. Computer Science</h3>
+        <p>Kerala University — National College, Thiruvananthapuram &nbsp;·&nbsp; 2023</p>
+      </div>
+    </div>
+    <div class="certs-grid">
+      <div class="cert-card reveal">
+        <div class="cert-icon" style="background:rgba(124,106,247,0.12);">🏅</div>
+        <div>
+          <h3>.NET Development Certification</h3>
+          <p>Udemy</p>
+        </div>
+      </div>
+      <div class="cert-card reveal">
+        <div class="cert-icon" style="background:rgba(45,212,191,0.12);">📱</div>
+        <div>
+          <h3>React Native Development</h3>
+          <p>Inmakes Learning Hub</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- RESUME DOWNLOAD -->
+<section id="resume">
+  <div class="container" style="padding:5rem 2rem;">
+    <p class="section-eyebrow" style="justify-content:center;display:block;text-align:center;">Resume</p>
+    <h2>Ready to work together?</h2>
+    <p>Download my resume or reach out directly — I'm open to exciting frontend and MEAN stack roles.</p>
+    <div style="display:flex;gap:1rem;justify-content:center;flex-wrap:wrap;">
+      <a href="Adithyan_Res.pdf" download="Adithyan_AS_Resume.pdf" class="btn-primary" id="resumeBtn">
+        <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+        Download Resume (PDF)
+      </a>
+      <a href="mailto:adithyan32adhi@gmail.com" class="btn-secondary">
+        <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,12 2,6"/></svg>
+        Get In Touch
+      </a>
+      <a href="https://linkedin.com/in/adithyan-as" target="_blank" class="btn-secondary">
+        <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M16 8a6 6 0 016 6v7h-4v-7a2 2 0 00-2-2 2 2 0 00-2 2v7h-4v-7a6 6 0 016-6zM2 9h4v12H2z"/><circle cx="4" cy="4" r="2"/></svg>
+        LinkedIn Profile
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <p>Designed & built for <strong style="color:var(--text);">Adithyan A S</strong> &nbsp;·&nbsp; Frontend Developer &amp; MEAN Stack Engineer</p>
+  <p style="margin-top:8px;"><a href="mailto:adithyan32adhi@gmail.com">adithyan32adhi@gmail.com</a> &nbsp;·&nbsp; Thiruvananthapuram, Kerala</p>
+</footer>
+
+<script>
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        e.target.classList.add('visible');
+        observer.unobserve(e.target);
+      }
+    });
+  }, { threshold: 0.1 });
+  document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+</script>
+</body>
+</html>
