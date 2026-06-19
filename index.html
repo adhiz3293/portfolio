@@ -255,6 +255,58 @@
   .project-card p { font-size: 13px; color: var(--muted); line-height: 1.65; flex: 1; }
   .project-tech { display: flex; flex-wrap: wrap; gap: 6px; }
 
+  
+  /* FEATURED PROJECT — Apple, visually leads the section */
+  .project-featured {
+    grid-column: 1 / -1;
+    background: linear-gradient(135deg, rgba(124,106,247,0.10) 0%, rgba(45,212,191,0.06) 100%);
+    border: 1px solid rgba(124,106,247,0.3);
+    border-radius: 16px;
+    padding: 2.25rem;
+    display: grid;
+    grid-template-columns: auto 1fr;
+    gap: 1.75rem;
+    align-items: start;
+    position: relative;
+    overflow: hidden;
+  }
+  .project-featured:hover { border-color: rgba(124,106,247,0.5); transform: none; }
+  .project-featured::before {
+    content: '';
+    position: absolute; top: -40%; right: -10%;
+    width: 280px; height: 280px;
+    background: radial-gradient(circle, rgba(124,106,247,0.15) 0%, transparent 70%);
+    pointer-events: none;
+  }
+  .featured-icon-wrap {
+    width: 64px; height: 64px; border-radius: 16px;
+    background: rgba(124,106,247,0.15); border: 1px solid rgba(124,106,247,0.3);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 32px; flex-shrink: 0;
+  }
+  .featured-eyebrow {
+    display: inline-flex; align-items: center; gap: 6px;
+    font-size: 11px; font-weight: 700; letter-spacing: 1.5px;
+    color: var(--accent2); text-transform: uppercase;
+    margin-bottom: 0.6rem;
+  }
+  .featured-eyebrow::before { content: '★'; font-size: 12px; }
+  .project-featured h3 { font-size: 19px; font-weight: 700; color: #fff; margin-bottom: 0.6rem; }
+  .project-featured .lead-line {
+    font-size: 14.5px; color: var(--text); font-weight: 500;
+    line-height: 1.6; margin-bottom: 0.75rem;
+  }
+  .project-featured p.desc { font-size: 13.5px; color: var(--muted); line-height: 1.7; }
+  .project-featured .project-tech { margin-top: 0.5rem; }
+  .project-featured .project-client {
+    background: rgba(124,106,247,0.15); color: var(--accent2);
+    border-color: rgba(124,106,247,0.3);
+  }
+  @media (max-width: 640px) {
+    .project-featured { grid-template-columns: 1fr; }
+  }
+ 
+
   /* CERTIFICATIONS */
   #certifications { background: var(--bg2); }
   .certs-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 1.5rem; }
@@ -355,7 +407,7 @@
         Frontend Experiences
       </h1>
       <p class="hero-desc">
-        Software Engineer with 2.9+ years building enterprise-grade Angular applications at TCS,
+        Software Engineer with nearly 3 years of building enterprise-grade Angular applications at TCS,
         specialising in Angular (v2–v20), TypeScript, MEAN Stack, and performance-first UI architecture.
       </p>
       <div class="hero-actions">
@@ -372,10 +424,6 @@
         <div>
           <div class="stat-val">2.9+</div>
           <div class="stat-label">Years Experience</div>
-        </div>
-        <div>
-          <div class="stat-val">15+</div>
-          <div class="stat-label">Components Built</div>
         </div>
         <div>
           <div class="stat-val">40%</div>
@@ -594,26 +642,29 @@
     <h2 class="section-title reveal">Project Highlights</h2>
     <p class="section-desc reveal">Enterprise-scale Angular applications supporting global business operations.</p>
     <div class="projects-grid">
-      <div class="project-card reveal">
-        <div class="project-header">
-          <div class="project-icon">🍎</div>
-          <span class="project-client">Client: Apple</span>
-        </div>
-        <h3>Angular Enterprise Applications</h3>
-        <p>
-          Contributed to 4 enterprise-scale Angular applications supporting global Apple business operations
-          and stakeholders. Led complete Angular 13 → 20 migration, reducing technical debt significantly.
-        </p>
-        <div class="project-tech">
-          <span class="tag hot">Angular 20</span>
-          <span class="tag">NgRx</span>
-          <span class="tag">RxJS</span>
-          <span class="tag">AWS S3</span>
-          <span class="tag">AWS EC2</span>
-          <span class="tag">TypeScript</span>
+      <div class="project-featured reveal">
+        <div class="featured-icon-wrap">🍎</div>
+        <div>
+          <div class="featured-eyebrow">Featured Project</div>
+          <span class="project-client" style="margin-bottom:0.75rem;display:inline-block;">Client: Apple Inc.</span>
+          <h3>Angular Enterprise Applications</h3>
+          <p class="lead-line">Lead contributor on a 4-app enterprise Angular suite for Apple's global operations — drove the complete Angular 13 → 20 migration end-to-end.</p>
+          <p class="desc">
+            Contributed to 4 enterprise-scale Angular applications supporting global Apple business operations
+            and stakeholders. Led the full Angular 13 → 20 migration, reducing technical debt significantly and
+            adopting Standalone Components and Signals along the way.
+          </p>
+          <div class="project-tech">
+            <span class="tag hot">Angular 20</span>
+            <span class="tag">NgRx</span>
+            <span class="tag">RxJS</span>
+            <span class="tag">AWS S3</span>
+            <span class="tag">AWS EC2</span>
+            <span class="tag">TypeScript</span>
+          </div>
         </div>
       </div>
-      <div class="project-card reveal">
+         <div class="project-card reveal">
         <div class="project-header">
           <div class="project-icon">⚙️</div>
           <span class="project-client" style="background:rgba(45,212,191,0.1);color:var(--teal);border-color:rgba(45,212,191,0.25);">TCS</span>
@@ -637,8 +688,7 @@
         </div>
         <h3>Internal React Platform</h3>
         <p>
-          Built and maintained internal React-based applications with component-based architecture,
-          state management, and responsive UI during tenure at Edifice Technologies.
+          Built and maintained internal Angular and Node.js applications with responsive user interfaces, reusable components, and API integrations while delivering software development training at Edifice Technologies.
         </p>
         <div class="project-tech">
           <span class="tag hot">React</span>
@@ -676,6 +726,20 @@
         <div>
           <h3>React Native Development</h3>
           <p>Inmakes Learning Hub</p>
+        </div>
+      </div>
+       <div class="cert-card reveal">
+        <div class="cert-icon" style="background:rgba(124,106,247,0.12);">🏅</div>
+        <div>
+          <h3>Angular Certification</h3>
+          <p>Udemy</p>
+        </div>
+      </div>
+       <div class="cert-card reveal">
+        <div class="cert-icon" style="background:rgba(124,106,247,0.12);">🏅</div>
+        <div>
+          <h3>Node/Express.JS Certification</h3>
+          <p>Udemy</p>
         </div>
       </div>
     </div>
